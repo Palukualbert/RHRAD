@@ -28,6 +28,11 @@
                                 <img src="../../assets/images/logo_RHRAD.png" alt="logo">
                             </div>
                             <h6 class="font-weight-light">Connectez-vous pour profiter des services</h6>
+                            <?php if (isset($_GET['error']) && $_GET['error'] == 1): ?>
+                                <div class="alert alert-danger" role="alert">
+                                    Remplissez les bonnes informations
+                                </div>
+                            <?php endif; ?>
                             <form class="pt-3" method="post" action="process_login.php">
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-lg" name="matricule" placeholder="Entrez le matricule" required>
@@ -36,7 +41,7 @@
                                     <input type="password" class="form-control form-control-lg" name="password" placeholder="Mot de passe" required>
                                 </div>
                                 <div class="form-group">
-                                    <select class="form-control form-control-lg" name="grade" required>
+                                    <select class="form-control form-control-lg" name="grade" style="color: black " required>
                                         <option value="" disabled selected>Choisir grade</option>
                                         <option value="encodeur_rh">Encodeur RH</option>
                                         <option value="encodeur_conges">Encodeur Congés</option>

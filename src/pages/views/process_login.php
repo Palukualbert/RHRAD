@@ -16,41 +16,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["connexion"])) {
 
     try {
         // Vérifier si l'utilisateur est déjà enregistré
-        $stmt = $pdo->prepare("SELECT * FROM Admin WHERE matricule = :matricule");
+        $stmt = $pdo->prepare("SELECT * FROM Personnes WHERE matricule = :matricule");
         $stmt->execute(['matricule' => $matricule]);
         $user = $stmt->fetch();
 
         if ($user) {
             // Vérifier les informations de connexion
-            if ($user['password'] == $password) {
+            if ($user['password'] == $password && $user['Grade'] == $grade) {
                 // Rediriger l'utilisateur en fonction de son grade
                 switch ($grade) {
                     case 'ENCODEUR_RH':
                         header("Location: encodeur_RH.php");
                         break;
                     case 'ENCODEUR_CONGES':
-                        header("Location: encodeur_Conges.php");
+                        header("Location: encodeur_CONGES.php");
                         break;
                     case 'ENCODEUR_REMUNERATION':
-                        header("Location: encodeur_Remuneration.php");
+                        header("Location: encodeur_REMUN.php");
                         break;
                     case 'ENCODEUR_POSTE':
-                        header("Location: encodeur_Postes.php");
+                        header("Location: encodeur_POSTES.php");
                         break;
                     case 'DP':
+                        header("Location: consultationProfils.php");
+
                     case 'ASG':
-                        header("Location: consultationProfil.php");
+                        header("Location: consultationProfils.php");
                         break;
                     default:
-                        header("Location: index.php");
+                        header("Location: login.php");
                         break;
                 }
                 exit();
             } else {
-                echo "Matricule ou mot de passe incorrect.";
+                header("Location: login.php?error=1");
                 exit();
             }
-        } else {
+        } /* else {
             // Ajouter l'utilisateur dans la base de données
             $stmt = $pdo->prepare("INSERT INTO Admin (matricule, password, grade) VALUES (:matricule, :password, :grade)");
             $stmt->execute(['matricule' => $matricule, 'password' => $password, 'grade' => $grade]);
@@ -78,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["connexion"])) {
                     break;
             }
             exit();
-        }
+        } */
     } catch (PDOException $e) {
         echo 'Requête échouée: ' . $e->getMessage();
     }
