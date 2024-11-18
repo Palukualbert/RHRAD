@@ -25,7 +25,6 @@
 </head>
 <body>
 <div class="container-scroller">
-    <!-- partial:partials/_navbar.php -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
             <a class="navbar-brand brand-logo me-5 d-flex align-items-center" href="#">
@@ -37,27 +36,12 @@
 
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-            <ul class="navbar-nav mr-lg-2">
-                <li class="nav-item nav-search d-none d-lg-block">
-                    <div class="input-group">
-                        <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-            <span class="input-group-text" id="search">
-              <i class="icon-search"></i>
-            </span>
-                        </div>
-                        <input type="text" class="form-control" id="navbar-search-input" placeholder="Recherche rapide" aria-label="search" aria-describedby="search">
-                    </div>
-                </li>
-            </ul>
             <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item dropdown">
-                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="login.php" data-bs-toggle="dropdown">
                         <button type="button" class="btn btn-outline-danger btn-fw">Se déconnecter</button>
                     </a>
             </ul>
-            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                <span class="icon-menu"></span>
-            </button>
         </div>
     </nav>
     <!-- partial -->
@@ -79,9 +63,9 @@
                     </a>
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="conges.php">Ajouter au congé</a></li>
+                            <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="AjouterConge.php">Ajouter au congé</a></li>
                             <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="conges.php">Employés en  congé</a></li>
-                            <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="retraite.php">Ajouter à la retraitre</a></li>
+                            <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="AjouterRetraite.php">Ajouter à la retraitre</a></li>
                             <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="retraite.php">Employés en retraite</a></li>
 
                         </ul>
@@ -109,14 +93,14 @@
                         <div class="col-12 grid-margin transparent">
                             <div class="row">
                                 <div class="col-12 col-md-6 mb-4 stretch-card transparent">
-                                    <a href="../src/pages/views/ASG.php">
+                                    <a href="AjouterConge.php">
                                         <button type="button" class="btn btn-primary btn-block" style="height: 220px;width: 400px; font-size: 22px; text-align: center; font-family: 'Times New Roman'; border: double;">
                                             AJOUTER AU CONGE
                                         </button>
                                     </a>
                                 </div>
                                 <div class="col-12 col-md-6 mb-4 stretch-card transparent">
-                                    <a href="../src/pages/views/ASG.php">
+                                    <a href="conges.php">
                                         <button type="button" class="btn btn-secondary btn-block" style="height: 220px;width: 400px; font-size: 22px; text-align: center; font-family: 'Times New Roman'; border: double;">
                                             EMPLOYES EN CONGES
                                         </button>

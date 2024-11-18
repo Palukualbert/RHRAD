@@ -49,24 +49,24 @@
   </head>
   <body>
   <div class="container-scroller">
-      <!-- partial:partials/_navbar.php -->
       <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
           <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
               <a class="navbar-brand brand-logo me-5 d-flex align-items-center" href="#">
                   <div class="d-flex align-items-center">
-                      <img src="../../assets/images/logo_RHRAD.png" alt="logo" width="110" height="60" />
+                      <img src="../../assets/images/logo_RHRAD.png" style="position: fixed" alt="logo" width="110" height="60" />
                   </div>
               </a>
+
+
           </div>
           <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
               <ul class="navbar-nav navbar-nav-right">
                   <li class="nav-item dropdown">
-                      <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="login.php"">
-                      <button type="button" class="btn btn-outline-danger btn-fw">Se déconnecter</button>
-                      </a></li>
+                      <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="login.php" data-bs-toggle="dropdown">
+                          <button type="button" class="btn btn-outline-danger btn-fw">Se déconnecter</button>
+                      </a>
               </ul>
           </div>
-      </nav>
       </nav>
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">

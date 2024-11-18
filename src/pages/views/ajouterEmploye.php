@@ -23,7 +23,6 @@
 </head>
 <body>
     <div class="container-scroller">
-        <!-- partial:partials/_navbar.php -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
                 <a class="navbar-brand brand-logo me-5 d-flex align-items-center" href="#">
@@ -37,13 +36,10 @@
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown">
-                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="login.php" data-bs-toggle="dropdown">
                             <button type="button" class="btn btn-outline-danger btn-fw">Se déconnecter</button>
                         </a>
                 </ul>
-                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                    <span class="icon-menu"></span>
-                </button>
             </div>
         </nav>
         <div class="col-12 grid-margin py-5" style="margin-top: 20px;">

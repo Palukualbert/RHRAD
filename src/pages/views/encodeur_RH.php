@@ -83,6 +83,7 @@
                     </a>
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
+                            <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="gererEncodeur.php">Gestion des encodeurs</a></li>
                             <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="consultationProfils.php">Profils des employés</a></li>
                             <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="historiquePostes.php">Historique des Postes</a></li>
                             <li class="nav-item" style="right: 45px;"> <a class="nav-link" href="remunerationEmployes.php">Rémunération des employés</a></li>

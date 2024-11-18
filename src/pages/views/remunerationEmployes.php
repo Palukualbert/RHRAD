@@ -44,7 +44,6 @@
     </style>
 </head>
 <body>
-<!-- partial:partials/_navbar.php -->
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
         <a class="navbar-brand brand-logo me-5 d-flex align-items-center" href="#">
@@ -52,18 +51,15 @@
                 <img src="../../assets/images/logo_RHRAD.png" style="position: fixed" alt="logo" width="110" height="60" />
             </div>
         </a>
+
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <ul class="navbar-nav navbar-nav-right">
             <li class="nav-item dropdown">
-                <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#">
+                <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="login.php" data-bs-toggle="dropdown">
                     <button type="button" class="btn btn-outline-danger btn-fw">Se déconnecter</button>
                 </a>
-            </li>
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button">
-            <span class="icon-menu"></span>
-        </button>
     </div>
 </nav>
 <div class="container-scroller">
@@ -71,32 +67,36 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Calculer la prime de l'Employé</h4>
-                <form class="forms-sample" action="encodeur_REMUN.php" method="POST">
+                <form class="forms-sample" action="PrimeEmployes.php" method="POST">
                     <div class="form-group">
                         <label for="matricule">Matricule</label>
                         <input type="text" class="form-control" id="matricule" name="matricule" placeholder="Matricule" required>
                     </div>
                     <div class="form-group">
-                        <label for="grade">Grade</label>
-                        <select class="form-control" id="grade" name="grade" required>
+                        <label for="Grade">Grade</label>
+                        <select class="form-control" id="Grade" name="Grade" required>
                             <option value="DP">DP</option>
                             <option value="CD">CD</option>
                             <option value="CB">CB</option>
-                            <option value="Autre">Autre Grade</option>
+                            <option value="Encodeur_RH">Encodeur_RH</option>
+                            <option value="Encodeur_REMUN">Encodeur_REMUN</option>
+                            <option value="Encodeur_CONGES">Encodeur_CONGES</option>
+                            <option value="Encodeur_POSTES">Encodeur_POSTES</option>
+                            <option value="autre">Autre</option>
+
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="nb_jours_preste">Nombre de Jours Prestés</label>
-                        <input type="number" class="form-control" id="nb_jours_preste" name="nb_jours_preste" placeholder="Nombre de Jours Prestés" required>
+                        <label for="date_remuneration">Date de Remuneration</label>
+                        <input type="date" class="form-control" id="date" name="date_remuneration" placeholder="Date de rémunération" required>
                     </div>
+
                     <div class="form-group">
-                        <label for="salaire_mensuel">Salaire Mensuel</label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" id="salaire_mensuel" name="salaire_mensuel" placeholder="Salaire Mensuel" required>
-                        </div>
+                        <label for="nb_jours_prestes">Nombre de Jours Prestés</label>
+                        <input type="number" class="form-control" id="nb_jours_prestes" name="nb_jours_prestes" placeholder="Nombre de Jours Prestés" required>
                     </div>
                     <button type="submit" class="btn btn-primary me-2">Calculer Prime</button>
-                    <button type="reset" class="btn btn-light">Annuler</button>
+                    <button type="reset" class="btn btn-dark">Annuler</button>
                 </form>
             </div>
         </div>

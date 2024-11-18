@@ -16,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["connexion"])) {
 
     try {
         // Vérifier si l'utilisateur est déjà enregistré
-        $stmt = $pdo->prepare("SELECT * FROM Personnes WHERE matricule = :matricule");
+        $bdd = new  PDO("mysql:host=localhost;dbname=gestion_rh", "root", "");
+        $stmt = $bdd->prepare("SELECT * FROM Personnes WHERE matricule = :matricule");
         $stmt->execute(['matricule' => $matricule]);
         $user = $stmt->fetch();
 

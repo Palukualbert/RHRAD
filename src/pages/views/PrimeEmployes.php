@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>RHRAD-SALAIRE</title>
+    <title>RHRAD-PRIME</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../assets/vendors/feather/feather.css">
     <link rel="stylesheet" href="../../assets/vendors/ti-icons/css/themify-icons.css">
@@ -54,8 +54,11 @@
         }
 
         .table-responsive {
-            height: 500px; /* Définir une hauteur fixe */
-            overflow-y: scroll; /* Ajouter un défilement vertical */
+            max-height: 500px; /* Hauteur maximale pour le défilement */
+            overflow-y: auto;
+            padding: 0;
+            margin: 0;
+            border-bottom: 1px solid #ddd; /* Ligne de séparation en bas */
         }
         table {
             width: 100%;
@@ -67,6 +70,7 @@
             top: 0;
             background: white;
             z-index: 10;
+            color: white;
         }
 
         th, td {
@@ -78,6 +82,7 @@
 </head>
 <body>
 <div class="container-scroller" style="display: flex; flex-direction: column; height: 100vh;overflow: scroll;">
+    <!-- partial:partials/_navbar.php -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
             <a class="navbar-brand brand-logo me-5 d-flex align-items-center" href="#">
@@ -108,14 +113,27 @@
                     <div class="col-lg-12 grid-margin stretch-card" style="flex: 1;">
                         <div class="card" style="flex: 1; display: flex; flex-direction: column;">
                             <div class="card-body" style="flex: 1; display: flex; flex-direction: column;">
-                                <h4 class="card-title">GESTION DE REMUNERATION</h4>
-                                <form style="display:inline;" action="remunerationEmployes.php" method="POST">
-                                    <input type="submit" class="btn btn-primary" name="submit" value="Calculer Prime">
+                                <h4 class="card-title">PRIME DES EMPLOYES</h4>
+                                <br>
+                                <form method="GET" action="" class="input-group mb-3 d-flex justify-content-end" style="left: 10px;">
+                                    <button class="btn btn-outline-primary" type="submit">Actualiser le tableau</button>
                                 </form>
-                                <br><br>
-                                <form method="GET" action="" class="input-group mb-3 d-flex justify-content-end">
-                                    <button class="btn btn-outline-success" type="submit">Actualiser le tableau</button>
-                                </form>
+
+                                <?php
+                                $traitement = new traitement();
+                                $searchResults = $traitement->read();
+
+                                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                                    $matricule = $_POST['matricule'];
+                                    $grade = $_POST['Grade'];
+                                    $nombre_jours_prestes = $_POST['nb_jours_prestes'];
+                                    $date_remuneration = $_POST['date_remuneration'];
+                                    $resultat = $traitement->calculerPrime($grade, $nombre_jours_prestes);
+                                    $prime = $resultat;
+                                    $id_personne = $traitement->getByMatricule($matricule);
+                                    $insertion = $traitement->insert_prime($prime,$date_remuneration,$nombre_jours_prestes,$id_personne);
+                                }
+                                ?>
 
                                 <?php
                                 if (isset($_GET["msg"])) {
@@ -126,72 +144,79 @@
                             </div>';
                                 }
                                 ?>
-
                                 <!-- Formulaire de recherche -->
                                 <form method="GET" action="">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="query" class="form-control" style="border-radius: 50px;" placeholder="Recherche rapide avec le nom ou le matricule" aria-label="Recherche" aria-describedby="button-addon2">
+                                    <div class="input-group mb-3" style="width: 100%;margin-top: 30px">
+                                        <input type="text" name="query" class="form-control" placeholder="Recherche rapide (nom, matricule)"  aria-label="Recherche" aria-describedby="button-addon2">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-info" style="position: relative; left: 10px; top: 5px;" type="submit" id="button-addon2">Rechercher</button>
+                                            <button class="btn btn-outline-info" type="submit" id="button-addon2" style="left: 5px">Rechercher</button>
                                         </div>
                                     </div>
                                 </form>
-                                <?php
-                                $traitement = new traitement();
-                                $message = '';
-                                $searchResults = [];
 
-                                // Vérifier s'il y a une requête de recherche
+                                <?php
+                                // Instancier votre traitement de données
+                                $traitement = new Traitement();
+                                $message = '';
+                                $primeEmployes = [];
+
+                                // Vérification de la recherche
                                 if (isset($_GET['query']) && !empty($_GET['query'])) {
                                     $query = $_GET['query'];
-                                    $searchResults = $traitement->search($query, $query);
-
-                                    // Vérifiez si la recherche a retourné des résultats
-                                    if (empty($searchResults)) {
-                                        $message = 'Employé introuvable';
-                                        // Affichez tous les employés si aucun résultat de recherche n'a été trouvé
-                                        $searchResults = $traitement->read();
+                                    $primeEmployes = $traitement->search_prime($query,$query); // Fonction pour rechercher les employés avec prime
+                                    if (empty($primeEmployes)) {
+                                        $message = 'Aucun employé trouvé avec ce critère.';
+                                        $primeEmployes = $traitement->getPersonnesAvecPrimes(); // Si pas de résultats, on affiche tout
                                     }
                                 } else {
-                                    // Si aucune recherche n'est effectuée, affichez tous les employés
-                                    $searchResults = $traitement->read();
+                                    // Si aucune recherche, on affiche tous les employés avec primes
+                                    $primeEmployes = $traitement->getPersonnesAvecPrimes();
                                 }
                                 ?>
 
+                                <!-- Message d'erreur ou d'info -->
                                 <?php if ($message): ?>
-                                    <div class="alert alert-danger" role="alert">
-                                        <?php echo htmlspecialchars($message); ?>
+                                    <div class="alert alert-warning" role="alert">
+                                        <?php echo $message; ?>
                                     </div>
                                 <?php endif; ?>
 
-                                <div class="table-responsive" style="flex: 1; overflow: auto;">
-                                    <table class="table table-striped" style="width: 100%;">
+                                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                    <table class="table table-striped table-hover" style="font-size: 1.1em;">
                                         <thead>
-                                        <tr>
-                                            <th>N°</th>
-                                            <th>Matricule</th>
-                                            <th>Nom</th>
-                                            <th>Postnom</th>
-                                            <th>Prenom</th>
-                                            <th>Genre</th>
-                                            <th>Grade</th>
-                                            <th>Division</th>
-                                            <th>Remuneration</th>
-
+                                        <tr style="background-color: #4A90E2; color: white; position: sticky; top: 0; z-index: 1; font-size: 1.2em;">
+                                            <th style="padding: 12px;color: white">Matricule</th>
+                                            <th style="padding: 12px;color: white">Postnom</th>
+                                            <th style="padding: 12px;color: white">Nom</th>
+                                            <th style="padding: 12px;color: white">Grade</th>
+                                            <th style="padding: 12px;color: white">Division</th>
+                                            <th style="padding: 12px;color: white">Rémunération</th>
+                                            <th style="padding: 12px;color: white">Prime</th>
+                                            <th style="padding: 12px;color: white">Date de rémunération</th>
+                                            <th style="padding: 12px;color: white">Jours prestés</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach ($searchResults as $employe): ?>
+                                        <?php foreach ($primeEmployes as $employe): ?>
                                             <tr>
-                                                <td><?php echo htmlspecialchars($employe['id']); ?></td>
                                                 <td><?php echo htmlspecialchars($employe['Matricule']); ?></td>
-                                                <td><?php echo htmlspecialchars($employe['Nom']); ?></td>
                                                 <td><?php echo htmlspecialchars($employe['Postnom']); ?></td>
-                                                <td><?php echo htmlspecialchars($employe['Prenom']); ?></td>
-                                                <td><?php echo htmlspecialchars($employe['Genre']); ?></td>
+                                                <td><?php echo htmlspecialchars($employe['Nom']); ?></td>
                                                 <td><?php echo htmlspecialchars($employe['Grade']); ?></td>
                                                 <td><?php echo htmlspecialchars($employe['NomDivision']); ?></td>
                                                 <td><?php echo htmlspecialchars($employe['Remuneration']); ?></td>
+                                                <td style="color: #0a58ca"><?php echo htmlspecialchars($employe['prime']); ?></td>
+                                                <td>
+                                                    <?php
+                                                    if (!empty($employe['date_remuneration'])) {
+                                                        $date = DateTime::createFromFormat('Y-m-d', $employe['date_remuneration']);
+                                                        echo $date ? $date->format('d-m-Y') : 'Date invalide';
+                                                    } else {
+                                                        echo 'Date non fournie';
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td><?php echo htmlspecialchars($employe['nombre_jours_prestes']); ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>
