@@ -66,7 +66,7 @@
                             <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="AjouterConge.php">Ajouter au congé</a></li>
                             <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="conges.php">Employés en  congé</a></li>
                             <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="AjouterRetraite.php">Ajouter à la retraitre</a></li>
-                            <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="retraite.php">Employés en retraite</a></li>
+                            <li class="nav-item" style="right: 30px;"> <a class="nav-link" href="retraiteEmployes.php">Employés en retraite</a></li>
 
                         </ul>
                     </div>
@@ -109,14 +109,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 col-md-6 mb-4 stretch-card transparent">
-                                    <a href="../src/pages/views/ASG.php">
+                                    <a href="AjouterRetraite.php">
                                         <button type="button" class="btn btn-success btn-block" style="height: 220px;width: 400px; font-size: 22px; text-align: center; font-family: 'Times New Roman'; border: double;">
                                             AJOUTER A LA RETRAITE
                                         </button>
                                     </a>
                                 </div>
                                 <div class="col-12 col-md-6 stretch-card transparent">
-                                    <a href="../src/pages/views/ASG.php">
+                                    <a href="retraiteEmployes.php">
                                         <button type="button" class="btn btn-dark btn-block" style="height: 220px;width: 400px; font-size: 22px; text-align: center; font-family: 'Times New Roman'; border: double;">
                                             EMPLOYES EN RETRAITE
                                         </button>
