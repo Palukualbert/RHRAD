@@ -156,7 +156,7 @@ function updateEmployee($matricule, $nom, $postnom, $dateNaissance, $grade, $div
         $bdd = new PDO("mysql:host=localhost;dbname=gestion_rh", "root", "");
         $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $bdd->prepare("UPDATE retraite 
+        $stmt = $bdd->prepare("UPDATE personnes 
                               SET Nom = ?, PostNom = ?, DateNaissance = ?, Grade = ?, NomDivision = ?
                               WHERE Matricule = ?");
         return $stmt->execute([$nom, $postnom, $dateNaissance, $grade, $division, $matricule]);

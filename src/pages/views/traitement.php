@@ -56,25 +56,24 @@ class traitement
 
 
     // Fonction pour modifier les informations d'une personne
-    public function update($id, $matricule, $nom, $postnom, $prenom, $dateNaissance, $numTelephone, $nomDivision, $remuneration, $genre, $grade, $refAffectation, $refEngagement)
+    public function update($Matricule, $Nom, $Postnom, $Prenom, $DateNaissance, $NumTelephone, $NomDivision, $Remuneration, $Genre, $Grade, $RefAffectation, $RefEngagement)
     {
         $bdd = new PDO("mysql:host=localhost;dbname=gestion_rh", "root", "");
-        $sql = "UPDATE personnes SET matricule = :matricule, nom = :nom, postnom = :postnom, prenom = :prenom, dateNaissance = :dateNaissance, numTelephone = :numTelephone, nomDivision = :nomDivision, remuneration = :remuneration, genre = :genre, grade = :grade, ref_affectation = :refAffectation, ref_engagement = :refEngagement WHERE id = :id";
+        $sql = "UPDATE personnes SET Matricule = :matricule, Nom = :nom, Postnom = :postnom, Prenom = :prenom, dateNaissance = :dateNaissance, numTelephone = :numTelephone, nomDivision = :nomDivision, Remuneration = :remuneration, Genre = :genre, Grade = :grade, ref_affectation = :refAffectation, ref_engagement = :refEngagement WHERE id = :id";
         $stmt = $bdd->prepare($sql);
         $stmt->execute([
-            'id' => $id,
-            'matricule' => $matricule,
-            'nom' => $nom,
-            'postnom' => $postnom,
-            'prenom' => $prenom,
-            'dateNaissance' => $dateNaissance,
-            'numTelephone' => $numTelephone,
-            'nomDivision' => $nomDivision,
-            'remuneration' => $remuneration,
-            'genre' => $genre,
-            'grade' => $grade,
-            'refAffectation' => $refAffectation,
-            'refEngagement' => $refEngagement
+            'Matricule' => $Matricule,
+            'Nom' => $Nom,
+            'Postnom' => $Postnom,
+            'Prenom' => $Prenom,
+            'DateNaissance' => $DateNaissance,
+            'NumTelephone' => $NumTelephone,
+            'NomDivision' => $NomDivision,
+            'Remuneration' => $Remuneration,
+            'Genre' => $Genre,
+            'Grade' => $Grade,
+            'RefAffectation' => $RefAffectation,
+            'RefEngagement' => $RefEngagement
         ]);
         return true;
     }
@@ -319,6 +318,65 @@ class traitement
         }
     }
 
+    public function rechercherHistoriquePostes($search = '')
+    {
+            $bdd = new PDO("mysql:host=localhost;dbname=gestion_rh", "root", "");
+            $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            if (!empty($search)) {
+                // Requête pour la recherche spécifique
+                $sql = "SELECT 
+                        historique_postes.id AS id,
+                        historique_postes.Grade,
+                        historique_postes.Date_debut,
+                        historique_postes.Date_fin
+                    FROM historique_postes
+                    INNER JOIN personnes ON historique_postes.IdPersonne = personnes.id
+                    WHERE personnes.Matricule LIKE :search OR personnes.Nom LIKE :search";
+                $stmt = $bdd->prepare($sql);
+                $stmt->bindValue(':search', $search, PDO::PARAM_STR);
+            } else {
+                // Requête pour l'affichage complet
+                $sql = "SELECT  
+                        historique_postes.id AS id,
+                        historique_postes.Division,
+                        historique_postes.Date_debut,
+                        historique_postes.Grade,
+                        historique_postes.Date_fin,
+                        personnes.Matricule,
+                        personnes.Nom,
+                        personnes.PostNom
+                    FROM historique_postes
+                    INNER JOIN personnes ON historique_postes.IdPersonne = personnes.id";
+                $stmt = $bdd->prepare($sql);
+            }
+
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+    public function modifierHistoriquePoste($id, $division, $dateDebut, $grade, $dateFin)
+    {
+            $bdd = new PDO("mysql:host=localhost;dbname=gestion_rh", "root", "");
+            $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sql = "UPDATE historique_postes
+                SET Division = :division, 
+                    Date_debut = :dateDebut, 
+                    Grade = :grade, 
+                    Date_fin = :dateFin
+                WHERE id = :id";
+            $stmt = $bdd->prepare($sql);
+            $stmt->execute([
+                ':division' => $division,
+                ':dateDebut' => $dateDebut,
+                ':grade' => $grade,
+                ':dateFin' => $dateFin,
+                ':id' => $id,
+            ]);
+
+            return $stmt->rowCount() > 0; // Retourne true si une ligne a été modifiée
+        }
 
 
 }

@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
                                 <td><?= (new DateTime($employee['Date_Enregistrement']))->format('d-m-Y') ?></td>
                                 <td><?= (new DateTime($employee['DateDebutRetraite']))->format('d-m-Y') ?></td>
                                 <td class="action-buttons">
-                                    <a href="modifierRetraitexampEmploye.php?id=<?= htmlspecialchars($employee['Matricule']) ?>" class="btn btn-warning btn-sm">
+                                    <a href="modifierRetraiteEmploye.php?id=<?= htmlspecialchars($employee['Matricule']) ?>" class="btn btn-warning btn-sm">
                                         <i class="fas fa-edit"></i> Modifier
                                     </a>
                                 </td>
@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
         <?php else: ?>
             <div class="alert alert-warning text-center mt-3">
                 <i class="fas fa-exclamation-circle"></i> 
-                Aucun employé trouvé pour la recherche : <strong><?= htmlspecialchars($searchTerm) ?></strong>.
+                Aucun employé trouvé pour la recherche : <strong><?= htmlspecialchars($searchTerm) ?></strong>
             </div>
         <?php endif; ?>
     </div>

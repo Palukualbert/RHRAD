@@ -28,10 +28,16 @@
                                 <img src="../../assets/images/logo_RHRAD.png" alt="logo">
                             </div>
                             <h6 class="font-weight-light">Connectez-vous pour profiter des services</h6>
-                            <?php if (isset($_GET['error']) && $_GET['error'] == 1): ?>
-                                <div class="alert alert-danger" role="alert">
-                                    Remplissez les bonnes informations
-                                </div>
+                            <?php if (isset($_GET['error'])): ?>
+                                <?php if ($_GET['error'] == 1): ?>
+                                    <div class="alert alert-danger">Identifiants incorrects.</div>
+                                <?php elseif ($_GET['error'] == 2): ?>
+                                    <div class="alert alert-warning">Votre compte est en attente de validation par un administrateur.</div>
+                                <?php elseif ($_GET['error'] == 3): ?>
+                                    <div class="alert alert-danger">Votre compte a été refusé. Contactez l'administrateur.</div>
+                                <?php elseif ($_GET['error'] == 4): ?>
+                                    <div class="alert alert-danger">Une erreur s'est produite. Réessayez plus tard.</div>
+                                <?php endif; ?>
                             <?php endif; ?>
                             <form class="pt-3" method="post" action="process_login.php">
                                 <div class="form-group">
@@ -43,10 +49,10 @@
                                 <div class="form-group">
                                     <select class="form-control form-control-lg" name="grade" style="color: black " required>
                                         <option value="" disabled selected>Choisir grade</option>
-                                        <option value="encodeur_rh">Encodeur RH</option>
-                                        <option value="encodeur_conges">Encodeur Congés</option>
-                                        <option value="encodeur_remuneration">Encodeur Rémunération</option>
-                                        <option value="encodeur_poste">Encodeur Poste</option>
+                                        <option value="ENCODEUR_RH">Encodeur_RH</option>
+                                        <option value="ENCODEUR_CONGES">Encodeur_Congés</option>
+                                        <option value="ENCODEUR_REMUNERATION">Encodeur_Rémunération</option>
+                                        <option value="ENCODEUR_POSTE">Encodeur_Poste</option>
                                         <option value="DP">DP</option>
                                         <option value="ASG">ASG</option>
                                     </select>
@@ -72,7 +78,7 @@
     <!-- endinject -->
     <!-- inject:js -->
     <script src="../../assets/js/off-canvas.js"></script>
-    <script src="../../assets/js/template.js"></script>
+    <script src="../../assets/js/template.jsZ"></script>
     <script src="../../assets/js/settings.js"></script>
     <script src="../../assets/js/todolist.js"></script>
     <!-- endinject -->

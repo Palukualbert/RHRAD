@@ -3,9 +3,9 @@
 include 'connexiondb.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["connexion"])) {
-    $matricule = strtoupper(trim($_POST["matricule"]));
-    $password = trim($_POST["password"]);
-    $grade = strtoupper(trim($_POST["grade"]));
+    $matricule = $_POST["matricule"];
+    $password = $_POST["password"];
+    $grade = $_POST["grade"];
 
     // Vérifier que le grade est valide
     $valid_grades = ['ENCODEUR_RH', 'ENCODEUR_CONGES', 'ENCODEUR_REMUNERATION', 'ENCODEUR_POSTE', 'DP', 'ASG'];
@@ -24,11 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["connexion"])) {
         if ($user) {
             // Vérifier les informations de connexion
             if ($user['password'] == $password && $user['Grade'] == $grade) {
-                // Rediriger l'utilisateur en fonction de son grade
+
                 switch ($grade) {
                     case 'ENCODEUR_RH':
                         header("Location: encodeur_RH.php");
-                        break;
                     case 'ENCODEUR_CONGES':
                         header("Location: encodeur_CONGES.php");
                         break;
@@ -49,39 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["connexion"])) {
                         break;
                 }
                 exit();
-            } else {
-                header("Location: login.php?error=1");
-                exit();
-            }
-        } /* else {
-            // Ajouter l'utilisateur dans la base de données
-            $stmt = $pdo->prepare("INSERT INTO Admin (matricule, password, grade) VALUES (:matricule, :password, :grade)");
-            $stmt->execute(['matricule' => $matricule, 'password' => $password, 'grade' => $grade]);
 
-            // Rediriger l'utilisateur en fonction de son grade après ajout
-            switch ($grade) {
-                case 'ENCODEUR_RH':
-                    header("Location: encodeur_RH.php");
-                    break;
-                case 'ENCODEUR_CONGES':
-                    header("Location: encodeur_Conges.php");
-                    break;
-                case 'ENCODEUR_REMUNERATION':
-                    header("Location: encodeur_Remuneration.php");
-                    break;
-                case 'ENCODEUR_POSTE':
-                    header("Location: encodeur_Postes.php");
-                    break;
-                case 'DP':
-                case 'ASG':
-                    header("Location: consultationProfil.php");
-                    break;
-                default:
-                    header("Location: index.php");
-                    break;
+            }else {
+                    header("Location: login.php?error=1");
+                    exit();
+                }
             }
-            exit();
-        } */
+
     } catch (PDOException $e) {
         echo 'Requête échouée: ' . $e->getMessage();
     }

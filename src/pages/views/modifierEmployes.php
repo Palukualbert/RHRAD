@@ -2,17 +2,16 @@
 <?php
 // Connexion à la base de données
 $dbname = "gestion_rh";
-$conn = mysqli_connect("localhost","root","",$dbname);
-
+$conn = mysqli_connect("localhost", "root", "", $dbname);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$id = intval($_GET['id']);
-
+$id = intval($_GET['id']); // ID de l'employé à modifier
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Récupérer les nouvelles valeurs depuis le formulaire
     $Matricule = $_POST['Matricule'];
     $Nom = $_POST['Nom'];
     $PostNom = $_POST['PostNom'];
@@ -26,6 +25,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $Ref_doc_affectation = $_POST['Ref_doc_affectation'];
     $Ref_acteEngagement = $_POST['Ref_acteEngagement'];
 
+    // Récupérer les anciennes données de l'employé
+    $sqlSelect = "SELECT Grade, NomDivision FROM `personnes` WHERE `id` = '$id'";
+    $resultSelect = $conn->query($sqlSelect);
+
+    if ($resultSelect->num_rows > 0) {
+        $row = $resultSelect->fetch_assoc();
+        $ancienGrade = $row['Grade'];
+        $ancienneDivision = $row['NomDivision'];
+
+        // Vérifier si le Grade ou la Division a changé
+        if ($ancienGrade !== $Grade || $ancienneDivision !== $NomDivision) {
+            // Clôturer l'ancien poste dans historiquePoste (si ouvert)
+            $sqlUpdateHistorique = "UPDATE `historique_Postes`
+                                    SET `Date_fin` = NOW()
+                                    WHERE `IdPersonne` = '$id' AND `Date_fin` IS NULL";
+            $conn->query($sqlUpdateHistorique);
+
+            // Ajouter un nouveau poste dans historiquePoste
+            $sqlInsertHistorique = "INSERT INTO `historique_Postes` (`Division`, `Date_debut`, `Grade`, `IdPersonne`) 
+                                    VALUES ('$NomDivision', NOW(), '$Grade', '$id')";
+            $conn->query($sqlInsertHistorique);
+        }
+    }
+
+    // Mettre à jour les informations dans la table `personnes`
     $sql = "UPDATE `personnes` SET 
             `Matricule`='$Matricule',
             `Nom`='$Nom',
@@ -42,12 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             WHERE `id` = '$id'";
 
     if ($conn->query($sql) === TRUE) {
-        header("Location: ajouter_Modifier_Employes_RH.php?msg=Modification reussi!");
+        header("Location: ajouter_Modifier_Employes_RH.php?msg=Modification reussie!");
     } else {
         echo "Error updating record: " . $conn->error;
     }
+
     $conn->close();
 } else {
+    // Préremplir le formulaire avec les informations actuelles de l'employé
     $sql = "SELECT * FROM `personnes` WHERE `id` = '$id' LIMIT 1";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
